@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -45,6 +45,9 @@ dependencies {
     //data validations
     implementation(libs.commons.validator)
     implementation(libs.androidx.compose.ui.ui)
+
+    // JSON serialization library, works with the Kotlin serialization plugin
+    implementation(libs.kotlinx.serialization.json)
 
 
 }

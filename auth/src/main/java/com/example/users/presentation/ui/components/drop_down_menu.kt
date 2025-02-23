@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,9 +25,9 @@ import com.example.core.ui.theme.GrayBackInputs
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropDown(list: List<String>, response: (String)-> Unit) {
+fun DropDown(label:String, list: List<String>, response: (String)-> Unit) {
 
-    var rol by remember { mutableStateOf(list[0]) }
+    var rol by rememberSaveable { mutableStateOf(list[0]) }
 
     LaunchedEffect(Unit) {
         response(rol)
@@ -55,7 +56,7 @@ fun DropDown(list: List<String>, response: (String)-> Unit) {
                     unfocusedLabelColor = Color.Gray,
                     focusedLabelColor = Color.Gray
                 ),
-                label = { Text("Ingresar como:") },
+                label = { Text(label) },
                 value = rol,
                 onValueChange = {},
                 readOnly = true,

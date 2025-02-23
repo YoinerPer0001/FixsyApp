@@ -1,4 +1,4 @@
-package com.example.fixsyapp.navigation
+package com.example.core.navigation
 
 import kotlinx.serialization.Serializable
 
@@ -7,4 +7,8 @@ object Login
 
 @Serializable
 object Home
+
+@Serializable
+object Register
+
 

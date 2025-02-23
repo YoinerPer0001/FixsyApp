@@ -15,11 +15,8 @@ class UserImplementation @Inject constructor(
 
     override suspend fun login(email: String, password: String, type: String): BasicUserBM? {
         try {
-            var newType = "client"
-            if(type == "Técnico") {
-                newType = "tecnic"
-            }
-            val request = LoginRequest(email = email, password =  password, type =  newType);
+
+            val request = LoginRequest(email = email, password =  password, type =  type);
             val response = userService.login(request)
             if(!response.isSuccessful){
                 Log.d("Warning:", "Usuario o contraseña incorrecta")

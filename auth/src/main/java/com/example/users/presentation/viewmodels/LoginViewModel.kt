@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.core.validators.Validator
 import com.example.users.domain.models.BasicUserBM
 import com.example.users.domain.repository.IUsers
+import com.example.users.domain.usecases.interfaces.ILogin
 import com.example.users.presentation.ui.screens.login.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -20,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userRepository: IUsers
+    private val useCaseLogin: ILogin
 ) : ViewModel() {
 
     private val _loginState = MutableSharedFlow<LoginState>(replay = 1)
@@ -42,7 +43,7 @@ class LoginViewModel @Inject constructor(
                     _loginState.emit(LoginState.ErrorEmail(Validator.isValidPassword(password)!!))
 
                 } else {
-                    val response = userRepository.login(email, password, type)
+                    val response = useCaseLogin.login(email, password, type)
                     if (response != null) {
                         _loginState.emit(LoginState.Success(response))
                     } else {

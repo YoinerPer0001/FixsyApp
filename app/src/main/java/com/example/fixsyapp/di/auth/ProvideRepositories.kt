@@ -1,4 +1,4 @@
-package com.example.fixsyapp.di
+package com.example.fixsyapp.di.auth
 
 import com.example.users.data.remote.UserService
 import com.example.users.data.repository.UserImplementation

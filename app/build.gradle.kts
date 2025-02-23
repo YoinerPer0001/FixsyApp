@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
-    kotlin("plugin.serialization") version "2.0.21"
+
 }
 
 android {
@@ -62,8 +62,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // JSON serialization library, works with the Kotlin serialization plugin
-    implementation(libs.kotlinx.serialization.json)
+
 
     //navigation
     implementation(libs.androidx.navigation.compose)
@@ -78,11 +77,11 @@ dependencies {
     // Retrofit para solicitudes API
     implementation(libs.retrofit.v2110)
     implementation(libs.retrofit2.converter.gson)
-    implementation(project(":auth"))
 
 
     //modules
     implementation(project(":core"))
+    implementation(project(":auth"))
 }
 // Allow references to generated code
 kapt {
