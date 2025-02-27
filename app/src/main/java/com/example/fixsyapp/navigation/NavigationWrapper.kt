@@ -8,10 +8,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.core.navigation.Home
 import com.example.core.navigation.Login
 import com.example.core.navigation.Register
-import com.example.users.presentation.ui.screens.HomeClientScreen
 import com.example.users.presentation.ui.screens.login.LoginScreen
 import com.example.users.presentation.ui.screens.register.RegisterScreen
-import com.example.users.presentation.viewmodels.LoginViewModel
+import com.example.users.presentation.viewmodels.login.LoginViewModel
+import com.example.users.presentation.viewmodels.register.ClientRegisterViewModel
 
 @Composable
 fun NavigationWrapper() {
@@ -29,7 +29,8 @@ fun NavigationWrapper() {
         }
 
         composable<Register> {
-            RegisterScreen(){ destination ->
+            val viewModel: ClientRegisterViewModel = hiltViewModel()
+            RegisterScreen(viewModel){ destination ->
                 navController.navigate(destination){
                     if(destination == Login){
                         popUpTo<Login>{inclusive = false} // borrar pila de navegacion
@@ -38,8 +39,6 @@ fun NavigationWrapper() {
             }
         }
 
-        composable<Home> {
-            HomeClientScreen()
-        }
+
     }
 }

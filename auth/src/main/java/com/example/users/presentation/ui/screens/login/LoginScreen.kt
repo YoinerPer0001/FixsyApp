@@ -17,22 +17,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,15 +45,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.core.navigation.Home
 import com.example.core.navigation.Register
 import com.example.core.ui.theme.ButtonBackColor
-import com.example.core.ui.theme.GrayBackInputs
 import com.example.users.R
-import com.example.users.domain.models.BasicUserBM
 import com.example.users.presentation.ui.components.ButtonPrimary
 import com.example.users.presentation.ui.components.DropDown
 import com.example.users.presentation.ui.components.InputForm
 import com.example.users.presentation.ui.components.TextPrimary
-import com.example.users.presentation.viewmodels.LoginViewModel
-import java.io.Serializable
+import com.example.users.presentation.viewmodels.login.LoginViewModel
+import es.dmoral.toasty.Toasty
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -92,12 +82,12 @@ fun LoginScreen(loginViewModel: LoginViewModel, navigate: (destination: Any) -> 
 
                 is LoginState.Error -> {
                     val errorMessage = (loginState as LoginState.Error).message
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                    Toasty.error(context,errorMessage, Toast.LENGTH_SHORT).show()
                 }
 
                 is LoginState.ErrorEmail -> {
                     val errorMessage = (loginState as LoginState.ErrorEmail).message
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                    Toasty.error(context,errorMessage, Toast.LENGTH_SHORT).show()
                 }
 
                 else -> {}

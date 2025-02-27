@@ -7,6 +7,9 @@ plugins {
 }
 
 android {
+
+
+
     namespace = "com.example.users"
     compileSdk = 35
 
@@ -37,6 +40,8 @@ android {
     buildFeatures {
         compose = true
     }
+
+
 }
 
 dependencies {
@@ -58,9 +63,15 @@ dependencies {
 
     implementation(libs.androidx.runtime.livedata)
 
+    //toasty
+    implementation (libs.grenderg.toasty)
+
     implementation(project(":core"))
+
+
 }
 
 kapt {
     correctErrorTypes = true
 }
+

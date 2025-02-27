@@ -1,6 +1,7 @@
 package com.example.users.presentation.ui.screens.register
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
@@ -25,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -45,20 +48,46 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.core.data.ClientRegisterRequest
 import com.example.core.navigation.Home
 import com.example.core.navigation.Login
 import com.example.core.ui.theme.SecondButtonColor
 import com.example.core.utils.UserType
 import com.example.core.utils.idTypes
+import com.example.core.validators.IsValidName
 import com.example.users.R
 import com.example.users.presentation.ui.components.ButtonPrimary
 import com.example.users.presentation.ui.components.DropDown
 import com.example.users.presentation.ui.components.InputForm
 import com.example.users.presentation.ui.components.TextPrimary
+import com.example.users.presentation.viewmodels.register.ClientRegisterViewModel
+import com.example.users.presentation.viewmodels.register.RegisterState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun RegisterScreen(navigate: (route: Any)-> Unit) {
+fun RegisterScreen(viewmodel: ClientRegisterViewModel, navigate: (route: Any)-> Unit) {
+
+    val context = LocalContext.current
+
+    val registerState by viewmodel._registerState.collectAsState(RegisterState.Idle)
+
+    LaunchedEffect(registerState) {
+        when(registerState){
+
+            is RegisterState.Success -> {
+                Toast.makeText(context, "Regsitrado con exito", Toast.LENGTH_SHORT).show()
+            }
+
+            is RegisterState.Error -> {
+                val errorMessage = (registerState as RegisterState.Error).message;
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            }
+
+            else -> {
+
+            }
+        }
+    }
 
     var contador by remember { mutableStateOf<Int>(1) }
 
@@ -78,6 +107,7 @@ fun RegisterScreen(navigate: (route: Any)-> Unit) {
     var inpPassFirst  by rememberSaveable  { mutableStateOf("") }
     var inpPassSecond  by rememberSaveable  { mutableStateOf("") }
     var inpTypeUser by rememberSaveable  { mutableStateOf("") }
+    var inpPhone by rememberSaveable { mutableStateOf("") }
 
 
     val idlist = mutableListOf<String>()
@@ -144,6 +174,7 @@ fun RegisterScreen(navigate: (route: Any)-> Unit) {
         }
     }
 
+
     Scaffold(modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars)) {
         Column(
             modifier = Modifier
@@ -187,6 +218,10 @@ fun RegisterScreen(navigate: (route: Any)-> Unit) {
                     InputForm(value = inpAdress, VisualTransformation.Companion.None, "Dirección", { value ->
                         inpAdress = value.toString()
                     })
+
+                    InputForm(value = inpPhone, VisualTransformation.Companion.None, "Celular", { value ->
+                        inpPhone = value.toString()
+                    }, KeyboardOptions(keyboardType = KeyboardType.Phone))
                 }
 
             }
@@ -244,7 +279,7 @@ fun RegisterScreen(navigate: (route: Any)-> Unit) {
 
                 ButtonPrimary("Siguiente") {
                     if(contador < 4){
-                        contador = contador + 1
+                        contador += 1
 
                     }else{
                         navigate(Home)
@@ -254,13 +289,23 @@ fun RegisterScreen(navigate: (route: Any)-> Unit) {
 
             AnimatedVisibility(visible = btnRegisterVisible){
                 ButtonPrimary("Registrarme!") {
-
+                    val client = ClientRegisterRequest(
+                        name = (inpName.trim() + " " + inpLastName.trim()),
+                        email = inpEmail.trim(),
+                        id_number = inpID.toLong(),
+                        phone = inpPhone.toLong(),
+                        password = inpPassFirst.trim(),
+                        address = inpAdress.trim(),
+                        id_num_type = inpTypeID.trim(),
+                        type = inpTypeUser.trim()
+                    )
+                    viewmodel.onRegister(client)
                 }
             }
 
             ButtonPrimary("Atrás", SecondButtonColor) {
                 if(contador > 0) {
-                    contador = contador - 1
+                    contador -= 1
                 }
             }
 

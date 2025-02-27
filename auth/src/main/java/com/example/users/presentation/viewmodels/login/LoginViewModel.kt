@@ -1,21 +1,14 @@
-package com.example.users.presentation.viewmodels
+package com.example.users.presentation.viewmodels.login
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.validators.Validator
-import com.example.users.domain.models.BasicUserBM
-import com.example.users.domain.repository.IUsers
 import com.example.users.domain.usecases.interfaces.ILogin
 import com.example.users.presentation.ui.screens.login.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
