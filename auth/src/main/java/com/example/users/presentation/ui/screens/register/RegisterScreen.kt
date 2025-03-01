@@ -61,26 +61,36 @@ import com.example.users.presentation.ui.components.DropDown
 import com.example.users.presentation.ui.components.InputForm
 import com.example.users.presentation.ui.components.TextPrimary
 import com.example.users.presentation.viewmodels.register.ClientRegisterViewModel
+import com.example.users.presentation.viewmodels.register.FormRegisterVM
 import com.example.users.presentation.viewmodels.register.RegisterState
+import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.delay
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun RegisterScreen(viewmodel: ClientRegisterViewModel, navigate: (route: Any)-> Unit) {
+fun RegisterScreen(
+    viewmodel: ClientRegisterViewModel,
+    registerVM: FormRegisterVM,
+    navigate: (route: Any) -> Unit
+) {
 
     val context = LocalContext.current
 
     val registerState by viewmodel._registerState.collectAsState(RegisterState.Idle)
 
     LaunchedEffect(registerState) {
-        when(registerState){
+        when (registerState) {
 
             is RegisterState.Success -> {
-                Toast.makeText(context, "Regsitrado con exito", Toast.LENGTH_SHORT).show()
+                Toasty.success(context, "Registrado con exito", Toast.LENGTH_SHORT).show()
+                delay(100)
+                registerVM.clearData()
+                navigate(Login)
             }
 
             is RegisterState.Error -> {
                 val errorMessage = (registerState as RegisterState.Error).message;
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                Toasty.error(context, errorMessage, Toast.LENGTH_SHORT).show()
             }
 
             else -> {
@@ -91,24 +101,9 @@ fun RegisterScreen(viewmodel: ClientRegisterViewModel, navigate: (route: Any)-> 
 
     var contador by remember { mutableStateOf<Int>(1) }
 
-    var docVisible by remember { mutableStateOf(false) }
-    var idVisible by remember { mutableStateOf(false) }
-    var emailPassVisible by remember { mutableStateOf(false) }
-    var typeVisible by remember { mutableStateOf(false) }
-    var btnNextVisible by remember { mutableStateOf<Boolean>(true) }
-    var btnRegisterVisible by remember { mutableStateOf(false) }
-
-    var inpName  by rememberSaveable  { mutableStateOf("") }
-    var inpLastName  by rememberSaveable  { mutableStateOf("") }
-    var inpAdress  by rememberSaveable  { mutableStateOf("") }
-    var inpTypeID  by rememberSaveable  { mutableStateOf("") }
-    var inpID  by rememberSaveable  { mutableStateOf("") }
-    var inpEmail  by rememberSaveable  { mutableStateOf("") }
-    var inpPassFirst  by rememberSaveable  { mutableStateOf("") }
-    var inpPassSecond  by rememberSaveable  { mutableStateOf("") }
-    var inpTypeUser by rememberSaveable  { mutableStateOf("") }
-    var inpPhone by rememberSaveable { mutableStateOf("") }
-
+    var firstForm by remember { mutableStateOf(false) }
+    var secondForm by remember { mutableStateOf(false) }
+    var thirdForm by remember { mutableStateOf(false) }
 
     val idlist = mutableListOf<String>()
     for (type in idTypes.entries) {
@@ -117,60 +112,38 @@ fun RegisterScreen(viewmodel: ClientRegisterViewModel, navigate: (route: Any)-> 
     var painter = painterResource(id = R.drawable.logo_no_fondo)
 
     LaunchedEffect(contador) {
-        when (contador){
-            0->{
+        when (contador) {
+            0 -> {
                 navigate(Login)
             }
+
             1 -> {
-                docVisible = true
-                idVisible = false
-                emailPassVisible = false
-                typeVisible = false
-                btnRegisterVisible = false
-                btnNextVisible = true
+                firstForm = true
+                secondForm = false
+                thirdForm = false
+
             }
 
-            2-> {
-                docVisible = false
-                idVisible = true
-                emailPassVisible = false
-                typeVisible = false
-                btnRegisterVisible = false
-                btnNextVisible = true
-            }
-            3->{
-                docVisible = false
-                idVisible = false
-                emailPassVisible = true
-                typeVisible = false
-                btnRegisterVisible = false
-                btnNextVisible = true
+            2 -> {
+                firstForm = false
+                secondForm = true
+                thirdForm = false
+
             }
 
-            4-> {
-                docVisible = false
-                idVisible = false
-                emailPassVisible = false
-                typeVisible = true
-                btnRegisterVisible = false
-                btnNextVisible = true
+            3 -> {
+                firstForm = false
+                secondForm = false
+                thirdForm = true
+            }
+
+            4 -> {
+                firstForm = false
+                secondForm = false
             }
 
 
             else -> {}
-        }
-    }
-
-    LaunchedEffect(inpTypeUser) {
-        when(inpTypeUser){
-            "Cliente" -> {
-                btnRegisterVisible = true
-                btnNextVisible = false
-            }
-            else -> {
-                btnRegisterVisible = false
-                btnNextVisible = true
-            }
         }
     }
 
@@ -180,7 +153,8 @@ fun RegisterScreen(viewmodel: ClientRegisterViewModel, navigate: (route: Any)-> 
             modifier = Modifier
                 .background(Color.White)
                 .fillMaxSize()
-                .padding(horizontal = 20.dp).verticalScroll(rememberScrollState()),
+                .padding(horizontal = 20.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Center,
         ) {
             //image
@@ -201,115 +175,30 @@ fun RegisterScreen(viewmodel: ClientRegisterViewModel, navigate: (route: Any)-> 
                 )
             }
             //information
-
-
-            AnimatedVisibility (visible = docVisible) {
-
-                Column {
-                    TextPrimary("Rápido, seguro y confiable!", fontSize = 18.sp)
-                    InputForm(value = inpName, VisualTransformation.Companion.None, "Nombres", { value ->
-                        inpName = value.toString()
-                    })
-
-                    InputForm(value = inpLastName, VisualTransformation.Companion.None, "Apellidos", { value ->
-                        inpLastName = value.toString()
-                    })
-
-                    InputForm(value = inpAdress, VisualTransformation.Companion.None, "Dirección", { value ->
-                        inpAdress = value.toString()
-                    })
-
-                    InputForm(value = inpPhone, VisualTransformation.Companion.None, "Celular", { value ->
-                        inpPhone = value.toString()
-                    }, KeyboardOptions(keyboardType = KeyboardType.Phone))
-                }
-
-            }
-
-            AnimatedVisibility(visible = idVisible){
-
-                Column {
-                    TextPrimary("Servicios a tu medida", fontSize = 18.sp)
-                    DropDown("Tipo de documento", idlist) { value ->
-                        inpTypeID = value
-                    }
-
-                    InputForm(value = inpID.toString(), VisualTransformation.Companion.None, "Numero", { value ->
-                        inpID = value.toString()
-                    }, KeyboardOptions(keyboardType = KeyboardType.Number))
-                }
-
-
-            }
-
-
-            AnimatedVisibility(visible = emailPassVisible){
-
-                Column {
-                    TextPrimary("Reparaciones sin complicaciones.", fontSize = 18.sp)
-
-                    InputForm(value = inpEmail, VisualTransformation.Companion.None, "Correo electronico", { value ->
-                        inpEmail = value.toString()
-                    }, KeyboardOptions(keyboardType = KeyboardType.Email))
-
-
-                    InputForm(value = inpPassFirst, PasswordVisualTransformation(), "Contraseña", { value ->
-                        inpPassFirst = value.toString()
-                    })
-
-                    InputForm(value = inpPassSecond, PasswordVisualTransformation(), "Repetir contraseña", { value ->
-                        inpPassSecond = value.toString()
-                    })
-                }
-
-            }
-
-           AnimatedVisibility(visible = typeVisible) {
-               Column {
-                   TextPrimary("Encuentra o brinda el servicio ideal", fontSize = 18.sp)
-                   DropDown("Registrarse como:", listOf<String>("Tecnico", "Cliente"), response = { value ->
-                       inpTypeUser = value
-                   })
-               }
-
-           }
-
-
-            AnimatedVisibility(visible = btnNextVisible){
-
-                ButtonPrimary("Siguiente") {
-                    if(contador < 4){
-                        contador += 1
-
-                    }else{
-                        navigate(Home)
-                    }
+            AnimatedVisibility(visible = firstForm) {
+                FirstRegister(registerVM) {
+                    //navigate to do click in next button
+                    contador +=1
                 }
             }
 
-            AnimatedVisibility(visible = btnRegisterVisible){
-                ButtonPrimary("Registrarme!") {
-                    val client = ClientRegisterRequest(
-                        name = (inpName.trim() + " " + inpLastName.trim()),
-                        email = inpEmail.trim(),
-                        id_number = inpID.toLong(),
-                        phone = inpPhone.toLong(),
-                        password = inpPassFirst.trim(),
-                        address = inpAdress.trim(),
-                        id_num_type = inpTypeID.trim(),
-                        type = inpTypeUser.trim()
-                    )
-                    viewmodel.onRegister(client)
+            AnimatedVisibility(visible = secondForm) {
+                SecondForm (registerVM) {
+                    //navigate to do click in next button
+                    contador +=1
                 }
             }
+
+            AnimatedVisibility(visible = thirdForm) {
+                ThirdForm (registerVM, viewmodel)
+            }
+
 
             ButtonPrimary("Atrás", SecondButtonColor) {
                 if(contador > 0) {
                     contador -= 1
                 }
             }
-
-
 
 
         }

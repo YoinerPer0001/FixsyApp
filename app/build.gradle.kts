@@ -62,7 +62,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
+    //splash
+    implementation(libs.androidx.core.splashscreen)
 
     //navigation
     implementation(libs.androidx.navigation.compose)
@@ -72,8 +73,6 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
-
-
     // Retrofit para solicitudes API
     implementation(libs.retrofit.v2110)
     implementation(libs.retrofit2.converter.gson)
@@ -82,6 +81,7 @@ dependencies {
     //modules
     implementation(project(":core"))
     implementation(project(":auth"))
+    implementation(project(":tech_complete_profile"))
 }
 // Allow references to generated code
 kapt {

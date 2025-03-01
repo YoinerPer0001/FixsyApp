@@ -24,3 +24,4 @@ rootProject.name = "FixSyApp"
 include(":app")
 include(":auth")
 include(":core")
+include(":tech_complete_profile")

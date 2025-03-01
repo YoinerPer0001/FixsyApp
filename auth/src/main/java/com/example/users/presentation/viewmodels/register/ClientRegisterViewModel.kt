@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.core.data.ClientRegisterRequest
 import com.example.core.validators.IsValidName
 import com.example.core.validators.IsvalidPhone
-import com.example.core.validators.isValidAdress
 import com.example.core.validators.isValidEmail
 import com.example.core.validators.isValidIdNumber
 import com.example.core.validators.isValidPassword
@@ -31,22 +30,19 @@ class ClientRegisterViewModel @Inject constructor(
         viewModelScope.launch {
             registerState.emit(RegisterState.Loading)
             try {
-                if (!client.name.IsValidName()) {
+                if (!client.name.IsValidName().first) {
                     delay(50)
                     registerState.emit(RegisterState.Error("El nombre no debe contener valores numericos"))
-                } else if (!client.email.isValidEmail()) {
+                } else if (!client.email.isValidEmail().first) {
                     delay(50)
                     registerState.emit(RegisterState.Error("Correo electronico no valido"))
-                } else if (!client.address.isValidAdress()) {
-                    delay(50)
-                    registerState.emit(RegisterState.Error("Dirección no valida"))
-                } else if (!client.id_number.toString().isValidIdNumber()) {
+                } else if (!client.id_number.toString().isValidIdNumber().first) {
                     delay(50)
                     registerState.emit(RegisterState.Error("Numero de identificacion no valido"))
-                } else if (!client.phone.toString().IsvalidPhone()) {
+                } else if (!client.phone.toString().IsvalidPhone().first) {
                     delay(50)
                     registerState.emit(RegisterState.Error("Numero de celular no valido"))
-                } else if (!client.password.isValidPassword()) {
+                } else if (!client.password.isValidPassword().first) {
                     delay(50)
                     registerState.emit(RegisterState.Error("Contraseña no valida, minimo 8 caracteres"))
                 } else {

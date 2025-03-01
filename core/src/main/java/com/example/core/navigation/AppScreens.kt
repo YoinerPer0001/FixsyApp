@@ -11,4 +11,9 @@ object Home
 @Serializable
 object Register
 
+@Serializable
+object SecondFormRegister
+
+
+
 
