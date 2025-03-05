@@ -1,4 +1,4 @@
-package com.example.users.presentation.ui.components
+package com.example.core.components.textfields
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +15,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +26,7 @@ import com.example.core.ui.theme.GrayBackInputs
 @Composable
 fun DropDown(label:String, list: List<String>, response: (String)-> Unit) {
 
-    var rol by rememberSaveable { mutableStateOf(list[0]) }
+    var rol by remember { mutableStateOf(list[0]) }
 
     LaunchedEffect(Unit) {
         response(rol)

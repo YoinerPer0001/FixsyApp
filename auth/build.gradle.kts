@@ -68,6 +68,9 @@ dependencies {
 
     implementation(project(":core"))
 
+    //cloudinary images upload
+    implementation(libs.cloudinary.android)
+
 
 }
 

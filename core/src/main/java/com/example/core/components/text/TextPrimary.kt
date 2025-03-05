@@ -1,4 +1,4 @@
-package com.example.users.presentation.ui.components
+package com.example.core.components.text
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

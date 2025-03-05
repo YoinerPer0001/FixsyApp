@@ -14,13 +14,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.core.navigation.Login
-import com.example.core.navigation.SecondFormRegister
 import com.example.core.utils.idTypes
-import com.example.users.presentation.ui.components.ButtonPrimary
-import com.example.users.presentation.ui.components.DropDown
-import com.example.users.presentation.ui.components.InputForm
-import com.example.users.presentation.ui.components.TextPrimary
+import com.example.core.components.Buttons.ButtonPrimary
+import com.example.core.components.textfields.DropDown
+import com.example.core.components.textfields.InputForm
+import com.example.core.components.text.TextPrimary
 import com.example.users.presentation.viewmodels.register.FormRegisterVM
 import es.dmoral.toasty.Toasty
 
@@ -46,7 +44,7 @@ fun SecondForm(
 
         InputForm(
             value = inpId,
-            VisualTransformation.Companion.None,
+            VisualTransformation.None,
             "Numero",
             { value ->
                 viewModel.updateUserId(value.toString())

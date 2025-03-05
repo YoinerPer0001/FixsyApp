@@ -4,15 +4,15 @@ import android.util.Log
 import com.example.core.data.ClientRegisterRequest
 import com.example.users.data.dto.LoginRequest
 import com.example.users.data.mappers.toUserBM
-import com.example.users.data.remote.UserService
+import com.example.users.data.remote.AuthUserService
 import com.example.users.domain.models.BasicUserBM
-import com.example.users.domain.repository.IUsers
+import com.example.users.domain.repository.IUsersAuth
 import javax.inject.Inject
 
 
-class UserImplementation @Inject constructor(
-    private val userService: UserService
-) : IUsers {
+class UserAuthImplementation @Inject constructor(
+    private val userService: AuthUserService
+) : IUsersAuth {
 
     override suspend fun login(email: String, password: String, type: String): BasicUserBM? {
         try {

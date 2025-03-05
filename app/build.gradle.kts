@@ -77,6 +77,9 @@ dependencies {
     implementation(libs.retrofit.v2110)
     implementation(libs.retrofit2.converter.gson)
 
+    //cloudinary images upload
+    implementation(libs.cloudinary.android)
+
 
     //modules
     implementation(project(":core"))

@@ -6,13 +6,14 @@ import kotlinx.serialization.Serializable
 object Login
 
 @Serializable
-object Home
-
-@Serializable
 object Register
 
 @Serializable
-object SecondFormRegister
+object TechnicianHome
+
+
+@Serializable
+object HomeScreen
 
 
 

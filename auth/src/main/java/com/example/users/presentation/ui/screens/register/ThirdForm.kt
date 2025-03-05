@@ -1,6 +1,5 @@
 package com.example.users.presentation.ui.screens.register
 
-import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -17,11 +16,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.data.ClientRegisterRequest
-import com.example.core.navigation.Login
-import com.example.users.presentation.ui.components.ButtonPrimary
-import com.example.users.presentation.ui.components.DropDown
-import com.example.users.presentation.ui.components.InputForm
-import com.example.users.presentation.ui.components.TextPrimary
+import com.example.core.components.Buttons.ButtonPrimary
+import com.example.core.components.textfields.DropDown
+import com.example.core.components.textfields.InputForm
+import com.example.core.components.text.TextPrimary
 import com.example.users.presentation.viewmodels.register.ClientRegisterViewModel
 import com.example.users.presentation.viewmodels.register.FormRegisterVM
 import es.dmoral.toasty.Toasty
@@ -42,7 +40,7 @@ fun ThirdForm(
     Column {
         TextPrimary("Reparaciones sin complicaciones.", fontSize = 18.sp)
 
-        InputForm(value = inpEmail, VisualTransformation.Companion.None, "Correo electronico", { value ->
+        InputForm(value = inpEmail, VisualTransformation.None, "Correo electronico", { value ->
             viewModel.updateEmail(value.toString())
         }, KeyboardOptions(keyboardType = KeyboardType.Email))
 
@@ -82,11 +80,11 @@ fun ThirdForm(
             )
         }
 
-        DropDown("Registrarse como:", listOf<String>("Tecnico", "Cliente"), response = { value ->
+        DropDown("Registrarse como:", listOf<String>("Técnico", "Cliente"), response = { value ->
             viewModel.updateUserType(value)
         })
 
-        ButtonPrimary("Siguiente") {
+        ButtonPrimary("Registrarme") {
             if (!viewModel.validateThirdForm()) {
                 Toasty.error(
                     context,
@@ -98,14 +96,14 @@ fun ThirdForm(
                 }
             } else {
                 val client = ClientRegisterRequest(
-                        name = (viewModel.userName.value.trim() + " " + viewModel.userLastName.value.trim()),
-                        email = viewModel.userEmail.value.trim(),
-                        id_number = viewModel.userId.value.toLong(),
-                        phone = viewModel.userPhone.value.toLong(),
-                        password = viewModel.secondPass.value.trim(),
-                        address = viewModel.userAdress.value.trim(),
-                        id_num_type = viewModel.idType.value.trim(),
-                        type = viewModel.userType.value.trim()
+                    name = (viewModel.userName.value.trim() + " " + viewModel.userLastName.value.trim()),
+                    email = viewModel.userEmail.value.trim(),
+                    id_number = viewModel.userId.value.toLong(),
+                    phone = viewModel.userPhone.value.toLong(),
+                    password = viewModel.secondPass.value.trim(),
+                    address = viewModel.userAdress.value.trim(),
+                    id_num_type = viewModel.idType.value.trim(),
+                    type = viewModel.userType.value.trim()
                 )
                 registerVM.onRegister(client)
             }

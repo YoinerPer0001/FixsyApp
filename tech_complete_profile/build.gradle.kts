@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -35,9 +38,43 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+
+    //hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    // Retrofit para solicitudes API
+    implementation(libs.retrofit.v2110)
+
+    implementation(libs.androidx.runtime.livedata)
+
+    //toasty
+    implementation (libs.grenderg.toasty)
+
+    //android activity for photo picker
+    implementation(libs.androidx.activity.compose.v170)
+
+    //coil images
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
+    //material icons extended
+    implementation (libs.androidx.material.icons.extended)
+
+    implementation(project(":core"))
+
+    //cloudinary images upload
+    implementation(libs.cloudinary.android)
+
+}
+
+kapt {
+    correctErrorTypes = true
 }

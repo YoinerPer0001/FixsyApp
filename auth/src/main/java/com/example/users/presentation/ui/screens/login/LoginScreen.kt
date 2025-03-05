@@ -42,14 +42,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.core.navigation.Home
 import com.example.core.navigation.Register
 import com.example.core.ui.theme.ButtonBackColor
 import com.example.users.R
-import com.example.users.presentation.ui.components.ButtonPrimary
-import com.example.users.presentation.ui.components.DropDown
-import com.example.users.presentation.ui.components.InputForm
-import com.example.users.presentation.ui.components.TextPrimary
+import com.example.core.components.Buttons.ButtonPrimary
+import com.example.core.components.textfields.DropDown
+import com.example.core.components.textfields.InputForm
+import com.example.core.components.text.TextPrimary
 import com.example.users.presentation.viewmodels.login.LoginViewModel
 import es.dmoral.toasty.Toasty
 
@@ -75,9 +74,10 @@ fun LoginScreen(loginViewModel: LoginViewModel, navigate: (destination: Any) -> 
     Scaffold(modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars)) {
 
         LaunchedEffect(loginState) {
-            when (loginState) {
+            when (val login = loginState) {
                 is LoginState.Success -> {
-                    navigate(Home)
+                    //delegamos the navegation logic to viewmodel
+                    navigate(login.destination)
                 }
 
                 is LoginState.Error -> {

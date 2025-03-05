@@ -2,11 +2,11 @@ package com.example.users.domain.usecases.implementations
 
 import com.example.core.data.ClientRegisterRequest
 import com.example.core.utils.UserType
-import com.example.users.domain.repository.IUsers
+import com.example.users.domain.repository.IUsersAuth
 import com.example.users.domain.usecases.interfaces.IClientRegister
 import javax.inject.Inject
 
-class ClientRegister @Inject constructor(private val userRepository : IUsers) : IClientRegister{
+class ClientRegister @Inject constructor(private val userRepository : IUsersAuth) : IClientRegister{
 
     override suspend fun clientRegister(client: ClientRegisterRequest): Pair<Boolean, String> {
         try {

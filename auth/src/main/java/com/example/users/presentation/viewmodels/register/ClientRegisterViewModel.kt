@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.data.ClientRegisterRequest
+import com.example.core.navigation.Login
 import com.example.core.validators.IsValidName
 import com.example.core.validators.IsvalidPhone
 import com.example.core.validators.isValidEmail
@@ -26,38 +27,24 @@ class ClientRegisterViewModel @Inject constructor(
     val _registerState: SharedFlow<RegisterState> = registerState
 
     fun onRegister(client: ClientRegisterRequest) {
+        Log.d("INFO", client.toString())
         Log.d("Client", client.toString())
         viewModelScope.launch {
             registerState.emit(RegisterState.Loading)
             try {
-                if (!client.name.IsValidName().first) {
-                    delay(50)
-                    registerState.emit(RegisterState.Error("El nombre no debe contener valores numericos"))
-                } else if (!client.email.isValidEmail().first) {
-                    delay(50)
-                    registerState.emit(RegisterState.Error("Correo electronico no valido"))
-                } else if (!client.id_number.toString().isValidIdNumber().first) {
-                    delay(50)
-                    registerState.emit(RegisterState.Error("Numero de identificacion no valido"))
-                } else if (!client.phone.toString().IsvalidPhone().first) {
-                    delay(50)
-                    registerState.emit(RegisterState.Error("Numero de celular no valido"))
-                } else if (!client.password.isValidPassword().first) {
-                    delay(50)
-                    registerState.emit(RegisterState.Error("Contraseña no valida, minimo 8 caracteres"))
-                } else {
-                    val (response, message) = clientRegisterUsercase.clientRegister(client)
-                    if(!response){
-                        registerState.emit(RegisterState.Error(message))
-                    }else{
-                        registerState.emit(RegisterState.Success)
-                    }
 
+                val (response, message) = clientRegisterUsercase.clientRegister(client)
+                if (!response) {
+                    registerState.emit(RegisterState.Error(message))
+                } else {
+                    //redirect to login
+
+                    registerState.emit(RegisterState.Success(Login))
                 }
 
 
             } catch (e: Exception) {
-                registerState.emit(RegisterState.Error("Error de conexión"))
+                registerState.emit(RegisterState.Error("Error de conexión, intente nuevamente"))
             }
         }
     }
